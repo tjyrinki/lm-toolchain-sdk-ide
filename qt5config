@@ -1,0 +1,34 @@
+-v
+-confirm-license
+-sysconfdir /etc/xdg
+-opensource
+-plugin-sql-mysql
+-plugin-sql-odbc
+-plugin-sql-psql
+-plugin-sql-sqlite
+-no-sql-sqlite2
+-plugin-sql-tds
+-system-sqlite
+-system-zlib
+-system-libjpeg
+-system-libpng
+-openssl
+-glib
+-verbose
+-optimized-qmake
+-no-strip
+-no-separate-debug-info
+-qpa xcb
+-xcb
+-icu
+-accessibility
+-no-directfb
+-nomake examples
+-nomake tests
+-skip qtwayland
+-skip qtwebengine
+-skip qtsensors
+-skip qtenginio
+-skip qtlocation
+-dbus-linked
+-system-libjpeg

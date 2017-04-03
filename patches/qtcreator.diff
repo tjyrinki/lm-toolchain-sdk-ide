@@ -1,0 +1,159 @@
+Index: lm-sdk-ide/dist/ide/qtcreator/src/app/app_version.h.in
+===================================================================
+--- lm-sdk-ide.orig/dist/ide/qtcreator/src/app/app_version.h.in
++++ lm-sdk-ide/dist/ide/qtcreator/src/app/app_version.h.in
+@@ -54,7 +54,7 @@ const char * const IDE_REVISION_STR
+ #ifdef IDE_SETTINGSVARIANT
+ const char * const IDE_SETTINGSVARIANT_STR      = STRINGIFY(IDE_SETTINGSVARIANT);
+ #else
+-const char * const IDE_SETTINGSVARIANT_STR      = \"QtProject\";
++const char * const IDE_SETTINGSVARIANT_STR      = \"lmsdk\";
+ #endif
+ 
+ #ifdef IDE_COPY_SETTINGS_FROM_VARIANT
+Index: lm-sdk-ide/dist/ide/qtcreator/src/app/main.cpp
+===================================================================
+--- lm-sdk-ide.orig/dist/ide/qtcreator/src/app/main.cpp
++++ lm-sdk-ide/dist/ide/qtcreator/src/app/main.cpp
+@@ -66,7 +66,7 @@ using namespace ExtensionSystem;
+ 
+ enum { OptionIndent = 4, DescriptionIndent = 34 };
+ 
+-const char appNameC[] = "Qt Creator";
++const char appNameC[] = "Link Motion SDK";
+ const char corePluginNameC[] = "Core";
+ const char fixedOptionsC[] =
+ " [OPTION]... [FILE]...\n"
+Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/builddirreader.cpp
+===================================================================
+--- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/builddirreader.cpp
++++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/builddirreader.cpp
+@@ -61,7 +61,7 @@ BuildDirReader::Parameters::Parameters(c
+     cmakeHasServerMode = cmake->hasServerMode();
+     cmakeExecutable = cmake->cmakeExecutable();
+ 
+-    pathMapper = cmake->pathMapper();
++    pathMapper = cmake->pathMapper(bc->target());
+     isAutorun = cmake->isAutoRun();
+ 
+     auto tc = ProjectExplorer::ToolChainKitInformation::toolChain(k, ProjectExplorer::Constants::CXX_LANGUAGE_ID);
+Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmakeconfigitem.h
+===================================================================
+--- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmakeconfigitem.h
++++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmakeconfigitem.h
+@@ -30,6 +30,8 @@
+ 
+ #include <functional>
+ 
++#include "cmake_global.h"
++
+ namespace ProjectExplorer { class Kit; }
+ namespace Utils {
+ class FileName;
+@@ -38,7 +40,7 @@ class MacroExpander;
+ 
+ namespace CMakeProjectManager {
+ 
+-class CMakeConfigItem {
++class CMAKE_EXPORT CMakeConfigItem {
+ public:
+     enum Type { FILEPATH, PATH, BOOL, STRING, INTERNAL, STATIC };
+     CMakeConfigItem();
+Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.cpp
+===================================================================
+--- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.cpp
++++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.cpp
+@@ -223,15 +223,15 @@ void CMakeTool::setDisplayName(const QSt
+     CMakeToolManager::notifyAboutUpdate(this);
+ }
+ 
+-void CMakeTool::setPathMapper(const CMakeTool::PathMapper &pathMapper)
++void CMakeTool::setPathMapperFactory(const CMakeTool::PathMapperFactory &pathMapperFactory)
+ {
+-    m_pathMapper = pathMapper;
++    m_pathMapperFactory = pathMapperFactory;
+ }
+ 
+-CMakeTool::PathMapper CMakeTool::pathMapper() const
++CMakeTool::PathMapper CMakeTool::pathMapper(const ProjectExplorer::Target *target) const
+ {
+-    if (m_pathMapper)
+-        return m_pathMapper;
++    if (m_pathMapperFactory)
++        return m_pathMapperFactory(target);
+     return [](const Utils::FileName &fn) { return fn; };
+ }
+ 
+Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.h
+===================================================================
+--- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.h
++++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.h
+@@ -39,7 +39,10 @@
+ 
+ QT_FORWARD_DECLARE_CLASS(QProcess)
+ 
+-namespace ProjectExplorer { class Kit; }
++namespace ProjectExplorer {
++    class Kit;
++    class Target;
++}
+ 
+ namespace CMakeProjectManager {
+ 
+@@ -76,6 +79,7 @@ public:
+     };
+ 
+     typedef std::function<Utils::FileName (const Utils::FileName &)> PathMapper;
++    typedef std::function<PathMapper (const ProjectExplorer::Target *)> PathMapperFactory;
+ 
+     explicit CMakeTool(Detection d, const Core::Id &id);
+     explicit CMakeTool(const QVariantMap &map, bool fromSdk);
+@@ -102,8 +106,8 @@ public:
+     QString displayName() const;
+     void setDisplayName(const QString &displayName);
+ 
+-    void setPathMapper(const PathMapper &includePathMapper);
+-    PathMapper pathMapper() const;
++    void setPathMapperFactory(const PathMapperFactory &pathMapperFactory);
++    PathMapper pathMapper(const ProjectExplorer::Target *target) const;
+ 
+ private:
+     enum class QueryType {
+@@ -141,7 +145,7 @@ private:
+     mutable QStringList m_functions;
+     mutable Version m_version;
+ 
+-    PathMapper m_pathMapper;
++    PathMapperFactory m_pathMapperFactory;
+ };
+ 
+ } // namespace CMakeProjectManager
+Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.cpp
+===================================================================
+--- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.cpp
++++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.cpp
+@@ -524,6 +524,11 @@ bool QtVersionManager::isValidId(int id)
+     return m_versions.contains(id);
+ }
+ 
++void QtVersionManager::triggerDocumentationUpdate()
++{
++    updateDocumentation();
++}
++
+ BaseQtVersion *QtVersionManager::version(int id)
+ {
+     QTC_ASSERT(isLoaded(), return nullptr);
+Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.h
+===================================================================
+--- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.h
++++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.h
+@@ -65,6 +65,8 @@ public:
+ 
+     static bool isValidId(int id);
+ 
++    static void triggerDocumentationUpdate ();
++
+ signals:
+     // content of BaseQtVersion objects with qmake path might have changed
+     void dumpUpdatedFor(const Utils::FileName &qmakeCommand);

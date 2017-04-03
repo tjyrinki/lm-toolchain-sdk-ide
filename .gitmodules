@@ -1,0 +1,21 @@
+[submodule "qtcreator"]
+	path = dist/ide/qtcreator
+	url = git://code.qt.io/qt-creator/qt-creator.git
+        ignore = dirty
+[submodule "qtcreator-plugin-linkmotion"]
+	path = dist/ide/qtcreator-plugin-linkmotion
+	url = ssh://git@bitbucket.link-motion.com:7999/lm/qtcreator-plugin-linkmotion.git
+        ignore = dirty
+[submodule "qt5"]
+	path = dist/qt5
+	url = git://code.qt.io/qt/qt5.git
+	branch = 5.9
+        ignore = dirty
+[submodule "fcitx-qt"]
+	path = dist/fcitx-qt
+	url = https://github.com/fcitx/fcitx-qt5.git
+        ignore = dirty
+[submodule "lm-sdk-tools"]
+	path = dist/link-motion.com/lm-sdk-tools
+	url = ssh://git@bitbucket.link-motion.com:7999/lm/lm-sdk-tools.git
+	ignore = dirty
