@@ -45,7 +45,7 @@ ELSE(CMAKE_BUILD_TYPE MATCHES DEBUG)
 ENDIF(CMAKE_BUILD_TYPE MATCHES DEBUG)
 
 add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/sync_submodules
-                   COMMAND git submodule update --init
+                   COMMAND git submodule update --checkout
                    COMMAND touch ${CMAKE_BINARY_DIR}/sync_submodules
                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
@@ -123,6 +123,7 @@ ExternalProject_Add(lm-sdk-tools
   CONFIGURE_COMMAND sh -c "exit 0"
   BUILD_COMMAND     sh -c "env GOPATH=${TOOLS_PREFIX}/build go install link-motion.com/lm-sdk-tools/lmsdk-target && env GOPATH=${TOOLS_PREFIX}/build go install link-motion.com/lm-sdk-tools/lmsdk-wrapper"
   INSTALL_COMMAND   sh -c "install -t ${CMAKE_BINARY_DIR}/lm-sdk-ide/bin ${TOOLS_PREFIX}/build/bin/lmsdk-target ${TOOLS_PREFIX}/build/bin/lmsdk-wrapper ${EXT_SOURCE_DIR}/link-motion.com/lm-sdk-tools/share/lxc-lm-download"
+  DEPENDS ApplyPatches
 )
 
 
