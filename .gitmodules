@@ -19,3 +19,6 @@
 	path = dist/link-motion.com/lm-sdk-tools
 	url = ssh://git@bitbucket.link-motion.com:7999/lm/lm-sdk-tools.git
 	ignore = dirty
+[submodule "dist/installer-framework"]
+	path = dist/installer-framework
+	url = git://code.qt.io/installer-framework/installer-framework.git

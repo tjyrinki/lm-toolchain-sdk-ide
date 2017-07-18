@@ -1,0 +1,37 @@
+-v
+-confirm-license
+-opensource
+-release
+-static
+-accessibility
+-fontconfig
+-system-freetype
+-qt-zlib
+-qt-libpng
+-qt-libjpeg
+-qt-xcb
+-qt-pcre
+-no-glib
+-no-cups
+-no-sql-sqlite
+-no-qml-debug
+-no-opengl
+-no-egl
+-no-xinput2
+-no-sm
+-no-icu
+-nomake examples
+-nomake tests
+-skip qtactiveqt
+-skip qtenginio
+-skip qtlocation
+-skip qtmultimedia
+-skip qtserialport
+-skip qtquick1
+-skip qtquickcontrols
+-skip qtscript
+-skip qtsensors
+-skip qtwebkit
+-skip qtwebsockets
+-skip qtxmlpatterns
+-skip qt3d

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>LinkMotion SDK Tools</DisplayName>
+    <Description>This will install LinkMotion SDK Tools.</Description>
+    <Version>1.2.0-2</Version>
+    <ReleaseDate>2017-07-19</ReleaseDate>
+    <RequiresAdminRights>false</RequiresAdminRights>
+    <ForcedInstallation>true</ForcedInstallation>
+    <Default>true</Default>
+    <Dependencies>fi.linkmotion.reqs</Dependencies>
+</Package>

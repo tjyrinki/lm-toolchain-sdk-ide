@@ -126,6 +126,67 @@ ExternalProject_Add(lm-sdk-tools
   DEPENDS ApplyPatches
 )
 
+if(NOT SKIP_INSTALLER)
+
+  set (QT_STATIC_BUILD_DIR    "${CMAKE_BINARY_DIR}/qt-static-build/build")
+  set (QT_STATIC_INSTALL_DIR  "${CMAKE_BINARY_DIR}/qt-static")
+
+  ExternalProject_Add(${QT_VERSION}-static
+    PREFIX      "qt-static-build"
+    SOURCE_DIR  "${QT_SOURCE_DIR}"
+    BINARY_DIR  "${QT_STATIC_BUILD_DIR}"
+    INSTALL_DIR "${QT_STATIC_INSTALL_DIR}"
+    DOWNLOAD_COMMAND  sh -c "exit 0"
+    CONFIGURE_COMMAND sh -c "${QT_SOURCE_DIR}/configure -prefix ${QT_STATIC_INSTALL_DIR} `cat ${CMAKE_SOURCE_DIR}/qt5config-static`"
+    BUILD_COMMAND     sh -c "make ${GENERATED_MAKE_FLAGS}"
+    INSTALL_COMMAND   sh -c "make install"
+    DEPENDS     ApplyPatches
+  )
+
+  SET (INSTALLER_FW_PREFIX "${CMAKE_BINARY_DIR}/installer-fw-build")
+  SET (INSTALLER_PATH "${INSTALLER_FW_PREFIX}/build")
+  ExternalProject_Add(installer-framework
+  DEPENDS ${QT_VERSION}-static
+  PREFIX      "${INSTALLER_FW_PREFIX}"
+  SOURCE_DIR  "${EXT_SOURCE_DIR}/installer-framework"
+  BINARY_DIR  "${INSTALLER_PATH}"
+  DOWNLOAD_COMMAND  sh -c "exit 0"
+  CONFIGURE_COMMAND sh -c "${QT_STATIC_INSTALL_DIR}/bin/qmake ${EXT_SOURCE_DIR}/installer-framework"
+  BUILD_COMMAND     sh -c "VERBOSE=1 make ${GENERATED_MAKE_FLAGS}"
+  INSTALL_COMMAND   sh -c "exit 0"
+  )
+
+  SET (INSTALLER_BUILD_DIR "${CMAKE_BINARY_DIR}/installer")
+  add_custom_target(installer
+    COMMAND rsync -av --delete ${CMAKE_SOURCE_DIR}/installer/ ${CMAKE_BINARY_DIR}/installer
+    COMMAND 7z a ${INSTALLER_BUILD_DIR}/packages/fi.linkmotion.qtcreator/data/lm-sdk-ide.7z ${CMAKE_BINARY_DIR}/lm-sdk-ide '-xr!*.debug'
+    COMMAND ${INSTALLER_PATH}/bin/binarycreator --offline-only 
+      -c ${INSTALLER_BUILD_DIR}/config.xml -p ${INSTALLER_BUILD_DIR}/packages
+      -i fi.linkmotion.reqs,fi.linkmotion.qtcreator
+      LinkMotionSDK.sh
+    COMMAND ${INSTALLER_PATH}/bin/binarycreator --online-only 
+      -c ${INSTALLER_BUILD_DIR}/config.xml -p ${INSTALLER_BUILD_DIR}/packages
+      LinkMotionSDK-Online.sh
+    COMMAND ${INSTALLER_PATH}/bin/repogen -r
+      -p ${INSTALLER_BUILD_DIR}/packages
+      -i fi.linkmotion.reqs,fi.linkmotion.qtcreator
+      lm-repository
+    DEPENDS ${QT_VERSION}-static installer-framework
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+  )
+
+  add_custom_target(deploy-installer
+    COMMAND rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --progress --delete
+            LinkMotionSDK* builder@tre-ci.build.link-motion.com:/data/build-artifacts/lm-sdk-ide/ 
+    COMMAND rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --progress --delete
+            lm-repository/ builder@tre-ci.build.link-motion.com:/data/build-artifacts/lm-sdk-ide/repository
+
+    DEPENDS installer
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+  )
+
+endif(NOT SKIP_INSTALLER)
+
 
 #add_custom_target(package
 #                  ${CMAKE_SOURCE_DIR}/apply-patches.sh
