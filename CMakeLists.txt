@@ -110,7 +110,8 @@ SET (TOOLS_PREFIX "${CMAKE_BINARY_DIR}/tools-build")
 ConcatStrings (LMSDK_TOOLS_DOWNLOAD_SCRIPT
   "ln -s ${EXT_SOURCE_DIR}/link-motion.com ${TOOLS_PREFIX}/build/src/link-motion.com && "
   "env GOPATH=${TOOLS_PREFIX}/build go get -d link-motion.com/lm-sdk-tools/lmsdk-target && "
-  "env GOPATH=${TOOLS_PREFIX}/build go get -d link-motion.com/lm-sdk-tools/lmsdk-wrapper"
+  "env GOPATH=${TOOLS_PREFIX}/build go get -d link-motion.com/lm-sdk-tools/lmsdk-wrapper &&"
+  "env GOPATH=${TOOLS_PREFIX}/build go get -d link-motion.com/lm-sdk-tools/lmsdk-download"
 )
 ExternalProject_Add(lm-sdk-tools
   PREFIX      "${TOOLS_PREFIX}"
@@ -121,8 +122,8 @@ ExternalProject_Add(lm-sdk-tools
   DOWNLOAD_COMMAND  sh -c "${LMSDK_TOOLS_DOWNLOAD_SCRIPT}"
   PATCH_COMMAND     sh -c "cd ${TOOLS_PREFIX}/build/src && patch -p1 -i ${EXT_SOURCE_DIR}/link-motion.com/lm-sdk-tools/patches/lxc.patch"
   CONFIGURE_COMMAND sh -c "exit 0"
-  BUILD_COMMAND     sh -c "env GOPATH=${TOOLS_PREFIX}/build go install link-motion.com/lm-sdk-tools/lmsdk-target && env GOPATH=${TOOLS_PREFIX}/build go install link-motion.com/lm-sdk-tools/lmsdk-wrapper"
-  INSTALL_COMMAND   sh -c "install -t ${CMAKE_BINARY_DIR}/lm-sdk-ide/bin ${TOOLS_PREFIX}/build/bin/lmsdk-target ${TOOLS_PREFIX}/build/bin/lmsdk-wrapper ${EXT_SOURCE_DIR}/link-motion.com/lm-sdk-tools/share/lxc-lm-download"
+  BUILD_COMMAND     sh -c "env GOPATH=${TOOLS_PREFIX}/build go install link-motion.com/lm-sdk-tools/lmsdk-target && env GOPATH=${TOOLS_PREFIX}/build go install link-motion.com/lm-sdk-tools/lmsdk-wrapper && env GOPATH=${TOOLS_PREFIX}/build go install link-motion.com/lm-sdk-tools/lmsdk-download"
+  INSTALL_COMMAND   sh -c "install -t ${CMAKE_BINARY_DIR}/lm-sdk-ide/bin ${TOOLS_PREFIX}/build/bin/lmsdk-target ${TOOLS_PREFIX}/build/bin/lmsdk-wrapper ${TOOLS_PREFIX}/build/bin/lmsdk-download ${EXT_SOURCE_DIR}/link-motion.com/lm-sdk-tools/share/lxc-lm-download"
   DEPENDS ApplyPatches
 )
 
@@ -171,7 +172,7 @@ if(NOT SKIP_INSTALLER)
       -p ${INSTALLER_BUILD_DIR}/packages
       -i fi.linkmotion.reqs,fi.linkmotion.qtcreator
       lm-repository
-    DEPENDS ${QT_VERSION}-static installer-framework
+    DEPENDS ${QT_VERSION}-static installer-framework lm-sdk-tools qtcreator
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
   )
 
