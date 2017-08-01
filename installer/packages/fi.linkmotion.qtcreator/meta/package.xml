@@ -2,10 +2,11 @@
 <Package>
     <DisplayName>LinkMotion SDK IDE</DisplayName>
     <Description>This will install the Link Motion SDK IDE based on Qt Creator 4.3.1.</Description>
-    <Version>4.3.1-2</Version>
-    <ReleaseDate>2017-07-26</ReleaseDate>
+    <Version>4.3.1-6</Version>
+    <ReleaseDate>2017-08-10</ReleaseDate>
     <RequiresAdminRights>false</RequiresAdminRights>
     <ForcedInstallation>true</ForcedInstallation>
     <Default>true</Default>
     <Dependencies>fi.linkmotion.reqs</Dependencies>
+    <Essential>true</Essential>
 </Package>

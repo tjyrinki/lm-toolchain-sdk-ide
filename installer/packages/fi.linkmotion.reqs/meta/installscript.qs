@@ -22,6 +22,22 @@ function Component() {
     return;
   }
   
-  component.addElevatedOperation("CreateDesktopEntry","/usr/share/applications/linkmotionsdk.desktop","Version=1.0\nType=Application\nTerminal=false\nExec=@TargetDir@/qtcreator/bin/qtcreator\nName=LinkMotion SDK\nIcon=@TargetDir@/linkmotionsdk_logo.png\nName[en_US]=LinkMotion SDK");
-  component.addElevatedOperation("Execute", "apt-get", "install", "git", "sshpass", "openssh-client", "libxcb-xinerama0", "lxc1", "weston", "gdb-multiarch", "-y");
+  component.addElevatedOperation("CreateDesktopEntry",
+    "/usr/share/applications/linkmotionsdk.desktop",
+    "Version=1.0\n"+
+    "Type=Application\n"+
+    "Terminal=false\n"+
+    "Exec=@TargetDir@/lm-sdk-ide/bin/qtcreator\n"+
+    "Name=LinkMotion SDK\n"+
+    "GenericName=The official Link Motion SDK IDE\n"+
+    "Icon=@TargetDir@/linkmotionsdk_logo.png\n"+
+    "Name[en_US]=LinkMotion SDK\n"+
+    "StartupWMClass=qtcreator\n"+
+    "Categories=Development;IDE;LinkMotion;");
+
+  install_script = "apt update && "+
+                   "env DEBIAN_FRONTEND=noninteractive apt install git sshpass openssh-client libxcb-xinerama0 lxc1 weston gdb-multiarch qemu-user-static -y"
+
+  component.addElevatedOperation("Execute", ["bash", "-c", install_script]);
+
 }

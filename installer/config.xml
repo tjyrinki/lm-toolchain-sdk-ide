@@ -17,7 +17,7 @@
     <TitleColor>#ffffff</TitleColor>
     <RemoteRepositories>
         <Repository>
-            <Url>http://tre-ci.build.link-motion.com/build-artifacts/lm-sdk-ide/repository</Url>
+            <Url>https://sdk.link-motion.com/repository</Url>
         </Repository>
     </RemoteRepositories>
 </Installer>

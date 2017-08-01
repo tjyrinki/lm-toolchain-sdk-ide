@@ -4,8 +4,9 @@
   <Description>This will install the Link Motion SDK dependencies.</Description>
   <Default>true</Default>
   <Script>installscript.qs</Script>
-  <ReleaseDate>2016-11-03</ReleaseDate>
+  <ReleaseDate>2017-08-10</ReleaseDate>
   <RequiresAdminRights>false</RequiresAdminRights>
   <ForcedInstallation>true</ForcedInstallation>  
-  <Version>0.1.6</Version>
+  <Essential>true</Essential>
+  <Version>0.1.8</Version>
 </Package>
