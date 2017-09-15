@@ -18,7 +18,7 @@ function Component() {
       case "ubuntu":
           expr = /1[67]\./;
           if (!expr.test(systemInfo.productVersion)){
-              cancelInstaller("Aborted installation! Ubuntu 16.04 or 16.10 is required. You are running " + systemInfo.prettyProductName);
+              cancelInstaller("Aborted installation! Ubuntu 16.04 LTS, 16.10, 17.04 or 17.10 is required. You are running " + systemInfo.prettyProductName);
           }
           install_script = "apt update && "+
                            "env DEBIAN_FRONTEND=noninteractive apt install git sshpass openssh-client libxcb-xinerama0 lxc1 weston gdb-multiarch qemu-user-static -y"
@@ -32,7 +32,7 @@ function Component() {
                            "zypper install git sshpass openssh libxcb-xinerama0 lxc weston gdb qemu-linux-user"
           break;
       default:
-          cancelInstaller("Aborted installation! At least Ubuntu 16.10 or Debian 9 are required. You are running " + systemInfo.prettyProductName);
+          cancelInstaller("Aborted installation! At least Ubuntu 16.04 LTS, 16.10, 17.04, 17.10, ebian 9 or OpenSuse 42.3 are required. You are running " + systemInfo.prettyProductName);
           return;
   }
  
