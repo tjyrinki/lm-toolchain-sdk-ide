@@ -14,11 +14,11 @@ function cancelInstaller(msg) {
 function Component() {
   //installer.setDefaultPageVisible(QInstaller.TargetDirectory, false);
   if (systemInfo.productType !== "ubuntu") {
-     cancelInstaller("Aborted installation! Ubuntu 16.04 or 16.10 is required. You are running " + systemInfo.prettyProductName);
+     cancelInstaller("Aborted installation! Ubuntu 16.04 LTS, 16.10, 17.04 or 17.10 is required. You are running " + systemInfo.prettyProductName);
      return;
   }
-  if (systemInfo.productVersion.indexOf("16") == -1) {
-    cancelInstaller("Aborted installation! Ubuntu 16.04 or 16.10 is required. You are running " + systemInfo.prettyProductName);
+  if (systemInfo.productVersion.indexOf("16") == -1 && systemInfo.productVersion.indexOf("17") == -1) {
+    cancelInstaller("Aborted installation! Ubuntu 16.04 LTS, 16.10, 17.04 or 17.10 is required. You are running " + systemInfo.prettyProductName);
     return;
   }
   
