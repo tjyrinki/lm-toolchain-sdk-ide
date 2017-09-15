@@ -24,8 +24,8 @@ function Component() {
                            "env DEBIAN_FRONTEND=noninteractive apt install git sshpass openssh-client libxcb-xinerama0 lxc1 weston gdb-multiarch qemu-user-static -y"
           break;
       case "debian":
-          install_script = "apt-get update && "+
-                           "env DEBIAN_FRONTEND=noninteractive apt-get install git sshpass openssh-client libxcb-xinerama0 lxc weston gdb-multiarch qemu-user-static -y"
+          install_script = "apt update && "+
+                           "env DEBIAN_FRONTEND=noninteractive apt install git sshpass openssh-client libxcb-xinerama0 lxc weston gdb-multiarch qemu-user-static -y"
           break;
       case "opensuse":
           install_script = "zypper refresh  && "+
