@@ -59,6 +59,22 @@ add_custom_target(ApplyPatches
                   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 		  DEPENDS InitQt)
 
+ExternalProject_Add(LibICU
+  PREFIX      "icu-build"
+  INSTALL_DIR "${QT_INSTALL_DIR}"
+  SVN_REPOSITORY  "http://source.icu-project.org/repos/icu/tags/release-59-1/icu4c"
+  CONFIGURE_COMMAND sh -c "${CMAKE_BINARY_DIR}/icu-build/src/LibICU/source/runConfigureICU Linux --prefix=${QT_INSTALL_DIR}"
+  BUILD_COMMAND     sh -c "make ${GENERATED_MAKE_FLAGS}"
+  INSTALL_COMMAND   sh -c "make install"
+  DEPENDS     ApplyPatches
+)
+
+ConcatStrings (QT_ADDITIONAL_CONF
+"${QT_ADDITIONAL_CONF} "
+"ICU_PREFIX=${QT_INSTALL_DIR} "
+"ICU_INCDIR=${QT_INSTALL_DIR}/include "
+"ICU_LIBDIR=${QT_INSTALL_DIR}/lib "
+)
 
 ExternalProject_Add(${QT_VERSION}
   PREFIX      "qt-build"
@@ -67,9 +83,9 @@ ExternalProject_Add(${QT_VERSION}
   INSTALL_DIR "${QT_INSTALL_DIR}"
   DOWNLOAD_COMMAND  sh -c "exit 0"
   CONFIGURE_COMMAND sh -c "${QT_SOURCE_DIR}/configure -prefix ${QT_INSTALL_DIR} ${QT_ADDITIONAL_CONF} `cat ${CMAKE_SOURCE_DIR}/qt5config`"
-  BUILD_COMMAND     sh -c "make ${GENERATED_MAKE_FLAGS}"
-  INSTALL_COMMAND   sh -c "make install"
-  DEPENDS     ApplyPatches
+  BUILD_COMMAND     sh -c "LD_LIBRARY_PATH=${QT_INSTALL_DIR}/lib make ${GENERATED_MAKE_FLAGS}"
+  INSTALL_COMMAND   sh -c "LD_LIBRARY_PATH=${QT_INSTALL_DIR}/lib make install"
+  DEPENDS     LibICU
 )
 
 SET (FCITX_PREFIX "${CMAKE_BINARY_DIR}/fcitx-qt-build")
@@ -101,7 +117,7 @@ ExternalProject_Add(qtcreator
   BINARY_DIR  "${QTCREATOR_PREFIX}/build"
   INSTALL_DIR "${CMAKE_BINARY_DIR}/lm-sdk-ide"
   DOWNLOAD_COMMAND  sh -c "exit 0"
-  CONFIGURE_COMMAND sh -c "${QT_INSTALL_DIR}/bin/qmake -r ${QMAKE_ADDITIONAL_CONF} ${EXT_SOURCE_DIR}/ide/lm-sdk-ide.pro"
+  CONFIGURE_COMMAND sh -c "LD_LIBRARY_PATH=${QT_INSTALL_DIR}/lib ${QT_INSTALL_DIR}/bin/qmake -r ${QMAKE_ADDITIONAL_CONF} ${EXT_SOURCE_DIR}/ide/lm-sdk-ide.pro"
   BUILD_COMMAND     sh -c "QT_PRIVATE_HEADERS=${QT_INSTALL_DIR} LD_LIBRARY_PATH=${QT_INSTALL_DIR}/lib make ${GENERATED_MAKE_FLAGS}"
   INSTALL_COMMAND   sh -c "QT_PRIVATE_HEADERS=${QT_INSTALL_DIR} LD_LIBRARY_PATH=${QT_INSTALL_DIR}/lib make INSTALL_ROOT=${CMAKE_BINARY_DIR}/lm-sdk-ide -j1 docs deployqt"
 )

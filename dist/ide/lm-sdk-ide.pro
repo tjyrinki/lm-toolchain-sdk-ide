@@ -2,7 +2,7 @@
 #
 # This file is part of the LinkMotion plugins.
 #
-# License: Proprietary
+# License: GNU Lesser General Public License v 2.1
 # Author: Benjamin Zeller <benjamin.zeller@link-motion.com>
 #
 # All rights reserved.

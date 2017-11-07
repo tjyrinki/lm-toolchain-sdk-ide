@@ -2,16 +2,20 @@
 -confirm-license
 -sysconfdir /etc/xdg
 -opensource
--plugin-sql-mysql
--plugin-sql-odbc
--plugin-sql-psql
--plugin-sql-sqlite
+-qt-zlib
+-qt-libpng
+-qt-libjpeg
+-qt-xcb
+-qt-pcre
+-qt-sqlite
+-qt-harfbuzz
+-no-libudev
+-no-sql-mysql
+-no-sql-odbc
+-no-sql-psql
+-no-sql-tds
 -no-sql-sqlite2
--plugin-sql-tds
--system-sqlite
--system-zlib
--system-libjpeg
--system-libpng
+-plugin-sql-sqlite
 -openssl
 -glib
 -verbose
@@ -19,7 +23,6 @@
 -no-strip
 -no-separate-debug-info
 -qpa xcb
--xcb
 -icu
 -accessibility
 -no-directfb
@@ -31,4 +34,4 @@
 -skip qtenginio
 -skip qtlocation
 -dbus-linked
--system-libjpeg
+-fontconfig

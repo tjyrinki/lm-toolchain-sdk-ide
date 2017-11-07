@@ -157,3 +157,64 @@ Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.h
  signals:
      // content of BaseQtVersion objects with qmake path might have changed
      void dumpUpdatedFor(const Utils::FileName &qmakeCommand);
+Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/projectexplorer/deploymentdata.h
+===================================================================
+--- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/projectexplorer/deploymentdata.h
++++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/projectexplorer/deploymentdata.h
+@@ -42,13 +42,25 @@ public:
+ 
+     void addFile(const DeployableFile &file)
+     {
++        DeployableFile fixme(file);
++
++        static QRegExp expr("\\/var\\/lib\\/lm-sdk\\/[^\\/]+\\/containers\\/[^\\/]+\\/rootfs");
++        if(expr.indexIn(file.remoteDirectory()) == 0) {
++            // Hack for projects using link motion container builder backends
++            // the path to LM container always looks like:
++            // /var/lib/lm-sdk/$USER/containers/<containername>/rootfs
++            fixme = DeployableFile(file.localFilePath()
++                                   , file.remoteDirectory().remove(expr)
++                                   , file.isExecutable() ? DeployableFile::TypeExecutable : DeployableFile::TypeNormal);
++        }
++
+         for (int i = 0; i < m_files.size(); ++i) {
+-            if (m_files.at(i).localFilePath() == file.localFilePath()) {
+-                m_files[i] = file;
++            if (m_files.at(i).localFilePath() == fixme.localFilePath()) {
++                m_files[i] = fixme;
+                 return;
+             }
+         }
+-        m_files << file;
++        m_files << fixme;
+     }
+ 
+     void addFile(const QString &localFilePath, const QString &remoteDirectory,
+Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxsignaloperation.cpp
+===================================================================
+--- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxsignaloperation.cpp
++++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxsignaloperation.cpp
+@@ -51,7 +51,7 @@ RemoteLinuxSignalOperation::~RemoteLinux
+ 
+ static QString signalProcessGroupByPidCommandLine(qint64 pid, int signal)
+ {
+-    return QString::fromLatin1("kill -%1 -- -%2 %2").arg(signal).arg(pid);
++    return QString::fromLatin1("bash -c \"kill -%1 -- -%2 %2\"").arg(signal).arg(pid);
+ }
+ 
+ void RemoteLinuxSignalOperation::run(const QString &command)
+@@ -75,12 +75,13 @@ void RemoteLinuxSignalOperation::finish(
+ static QString signalProcessGroupByNameCommandLine(const QString &filePath, int signal)
+ {
+     return QString::fromLatin1(
++                "bash -c \""
+                 "cd /proc; for pid in `ls -d [0123456789]*`; "
+                 "do "
+                 "if [ \"`readlink /proc/$pid/exe`\" = \"%1\" ]; then "
+                 "    kill -%2 -- -$pid $pid;"
+                 "fi; "
+-                "done").arg(filePath).arg(signal);
++                "done\"").arg(filePath).arg(signal);
+ }
+ 
+ QString RemoteLinuxSignalOperation::killProcessByNameCommandLine(const QString &filePath) const
