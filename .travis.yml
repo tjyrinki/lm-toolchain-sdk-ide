@@ -1,0 +1,59 @@
+sudo: required
+dist: trusty
+group: stable
+language: c++
+os: linux
+services:
+- docker
+git:
+  submodules: 'false'
+before_install:
+- cat /proc/cpuinfo
+- docker pull ubuntu:xenial
+- docker run -i -d --name xe ubuntu:xenial bash
+- docker exec xe useradd -m -p ubuntu ubuntu
+- docker exec xe ls /home
+- docker exec xe apt-get -qq update
+- docker exec xe apt-get install -qq build-essential cmake git devscripts quilt wget
+- docker exec xe apt-get install -qq libx11-xcb1 libfontconfig1 bzr pkg-config lxc-dev
+  chrpath p7zip-full
+- docker exec xe bash -c "apt-get install -qq libgl1-mesa-dev || apt-get install -qq
+  libgl-dev"
+- docker exec xe wget -q https://redirector.gvt1.com/edgedl/go/go1.9.2.linux-amd64.tar.gz
+  -O /tmp/go.tgz
+- docker exec xe wget -q https://download.qt.io/official_releases/qt-installer-framework/3.0.2/QtInstallerFramework-linux-x64.run
+  -O /tmp/installer.run
+- docker exec xe wget -q https://download.qt.io/official_releases/qt/5.9/5.9.3/qt-opensource-linux-x64-5.9.3.run
+  -O /tmp/qt.run
+- docker exec xe chmod a+x /tmp/installer.run
+- docker exec xe chmod a+x /tmp/qt.run
+- docker cp scripts/qt-install-script.js xe:/tmp
+- docker cp scripts/qt-installer-installscript.js xe:/tmp
+- docker exec -u ubuntu xe /tmp/qt.run -platform minimal -v --script /tmp/qt-install-script.js
+- docker exec -u ubuntu xe /tmp/installer.run -platform minimal -v --script /tmp/qt-installer-installscript.js
+- docker exec xe tar -C /usr/local -xf /tmp/go.tgz
+script:
+- CRED_FILE="dist/ide/qtcreator-plugin-linkmotion/src/lmbaseplugin/cred_key.h" scripts/generate_cred_key.sh
+- docker exec -u ubuntu xe bash -c "cd /home/ubuntu; mkdir project"
+- docker cp . xe:/home/ubuntu/project
+- docker exec xe chown -R ubuntu:ubuntu /home/ubuntu
+- docker exec -u ubuntu xe bash -c "cd /home/ubuntu; mkdir build"
+- docker exec -u ubuntu xe bash -c "cd /home/ubuntu/build; PATH=$PATH:/usr/local/go/bin
+  cmake -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DQT_INSTALL_DIR=\"/home/ubuntu/lmbuild/qt/5.9.3/gcc_64\" -DINSTALLER_PATH=\"/home/ubuntu/lmbuild/installerfw/\"
+  ../project"
+- docker exec -u ubuntu xe bash -c "cd /home/ubuntu/build; PATH=$PATH:/usr/local/go/bin
+  make installer"
+env:
+  global:
+    secure: RMWNdQUOujE9hIQOagdH+66ZcZVvPBxS8/VkWPsNG12yx0Df6YP+3ia01DshbPy4qLj7T6cz7AfrCj6+UUdeGHA9jRqac53pGkfDG2+oNU4iZSkuLgoxcbkmJGw/10VoK0GmqMoqHM/WhUXMrTyGx/E0h+nhF20epxMAoClf/KHxVZLNJYy58oTW4puh+S4AVbhLEOQEY2vQQb9XOtefH8AkscexTCKiO+fSDm1tHrHQADRvXqNGPJIrk4VPScvL//M5ERw7QqFoOvKEye4VeKRCVstsNO8BFqnJqTaxllNNzo1yQ7cW1hcsdZsvPItNpCd5EXnkowFHMD2cwZOzBoAigTKhD8jTG/1qflnlOvCI3cH0PcLJioQOH48hqVvmWmKfIEwl4odeFvUWuQ0QZ/aQlv+hwQnUJEPeYsKlFthKkh4RO0cqGqDrCES0FKKq+TC3xIqTnyo5GtZ3y/iF4FXIDZ2NtP9QPiyRmerFAwlkeNK2256pUKiTBnfNMuNd5D78S6fa5vTlpoJBK2rVA1KIEzilcNHJcXjV0u+e4zkxr/qXRFEznZQElCr17/gvkMevraexYwuCuVTm4XqDv+IeGUXKA1MPigA1gAnC1/buMS1on7ZP3Sg+xWv0iAD/DjPAs7wJDTqwcWFXt3d++OISCKSb4CtyFsr7TkfzUUo=
+deploy:
+  provider: releases
+  api_key:
+    secure: Dgslt9U0wQbS4emnXMkiESHF+3pBBK60W3mCy1y8so1/yGmF/0jTmc9lO+tJlE3GMKMfUDsvZCfvIFYDpKkYYXyfDIt4C0wmec4DOQdmSe46ECr3H4gW8g3PPGWo6mnwblgdwUcyzSiVZ9+uocQRnL721cJ04xjjyJZNUpzoSUUPmS00KamrFVPt52+i9YvGy6WiEEp/LjCQkqVIjBB6PSFpsjjSwWTDftSSyOKSyCTeBOPSOelpSdpYkMrjS+yVWqmRGlhEbpZkwS/CduCn67Egox8ATXHD+kvOPMPW1fgHAozPW6ZcP+E7Ypa1W1TKfe/Yxkl+DjXEDv1y23GpcqJc/hclX+oV2pwhyPP5EEVZCL+7AjHtfVXvFNtpvWYYbO8S4jJCJzXhKkJRZvt0AC+GXf3Q9/gPow9PFre2VqCMKIQ5dqacnxvADKMVDPmJB7OStZbL7tbMMUqmkpuVgssyExgNZ1saHkQA9ursvp/KoEGewSPfm9JbK/yypYSTGZUumMHnfmO+QTYxiIcWmPu5M8eRfpasWI2pEq/3gWgwP11WmbBe9PIzN+ITA6AXzscNxhxXlXs9hyFtAD6bCCSHlTw/oQ8o725GLoOLbNOjcRSMjAI+8su3eiAZ0lG9H0DqZ+X8iPavZm4JuF65yPiZ1SiwXecVfzq0SIn4aGs=
+  file: release.tgz
+  skip_cleanup: true
+  on:
+    repo: linkmotion/lm-toolchain-sdk-ide
+    tags: true
+
+
