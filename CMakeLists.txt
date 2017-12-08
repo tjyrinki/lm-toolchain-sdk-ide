@@ -54,12 +54,13 @@ add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/sync_submodules
 
 add_custom_command(OUTPUT ${CMAKE_SOURCE_DIR}/dist/ide/qtcreator-plugin-linkmotion/src/lmbaseplugin/cred_key.h
                    COMMAND CRED_FILE=${CMAKE_SOURCE_DIR}/dist/ide/qtcreator-plugin-linkmotion/src/lmbaseplugin/cred_key.h  ${CMAKE_SOURCE_DIR}/scripts/generate_cred_key.sh
-                   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})  
+                   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                   DEPENDS ${CMAKE_BINARY_DIR}/sync_submodules)  
 
 add_custom_target(ApplyPatches
                   ${CMAKE_SOURCE_DIR}/apply-patches.sh
                   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-                  DEPENDS ${CMAKE_BINARY_DIR}/sync_submodules ${CMAKE_SOURCE_DIR}/dist/ide/qtcreator-plugin-linkmotion/src/lmbaseplugin/cred_key.h)
+                  DEPENDS ${CMAKE_SOURCE_DIR}/dist/ide/qtcreator-plugin-linkmotion/src/lmbaseplugin/cred_key.h)
 
 SET (QTCREATOR_PREFIX "${CMAKE_BINARY_DIR}/qtcreator-build")
 ExternalProject_Add(qtcreator

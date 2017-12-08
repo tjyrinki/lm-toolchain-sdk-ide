@@ -1,7 +1,7 @@
-Index: lm-sdk-ide/dist/ide/qtcreator/src/app/app_version.h.in
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/app/app_version.h.in
 ===================================================================
---- lm-sdk-ide.orig/dist/ide/qtcreator/src/app/app_version.h.in
-+++ lm-sdk-ide/dist/ide/qtcreator/src/app/app_version.h.in
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/app/app_version.h.in
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/app/app_version.h.in
 @@ -54,7 +54,7 @@ const char * const IDE_REVISION_STR
  #ifdef IDE_SETTINGSVARIANT
  const char * const IDE_SETTINGSVARIANT_STR      = STRINGIFY(IDE_SETTINGSVARIANT);
@@ -11,10 +11,10 @@ Index: lm-sdk-ide/dist/ide/qtcreator/src/app/app_version.h.in
  #endif
  
  #ifdef IDE_COPY_SETTINGS_FROM_VARIANT
-Index: lm-sdk-ide/dist/ide/qtcreator/src/app/main.cpp
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/app/main.cpp
 ===================================================================
---- lm-sdk-ide.orig/dist/ide/qtcreator/src/app/main.cpp
-+++ lm-sdk-ide/dist/ide/qtcreator/src/app/main.cpp
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/app/main.cpp
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/app/main.cpp
 @@ -66,7 +66,7 @@ using namespace ExtensionSystem;
  
  enum { OptionIndent = 4, DescriptionIndent = 34 };
@@ -24,10 +24,10 @@ Index: lm-sdk-ide/dist/ide/qtcreator/src/app/main.cpp
  const char corePluginNameC[] = "Core";
  const char fixedOptionsC[] =
  " [OPTION]... [FILE]...\n"
-Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/builddirreader.cpp
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/builddirreader.cpp
 ===================================================================
---- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/builddirreader.cpp
-+++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/builddirreader.cpp
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/builddirreader.cpp
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/builddirreader.cpp
 @@ -61,7 +61,7 @@ BuildDirReader::Parameters::Parameters(c
      cmakeHasServerMode = cmake->hasServerMode();
      cmakeExecutable = cmake->cmakeExecutable();
@@ -37,10 +37,10 @@ Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/builddirrea
      isAutorun = cmake->isAutoRun();
  
      auto tc = ProjectExplorer::ToolChainKitInformation::toolChain(k, ProjectExplorer::Constants::CXX_LANGUAGE_ID);
-Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmakeconfigitem.h
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmakeconfigitem.h
 ===================================================================
---- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmakeconfigitem.h
-+++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmakeconfigitem.h
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmakeconfigitem.h
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmakeconfigitem.h
 @@ -30,6 +30,8 @@
  
  #include <functional>
@@ -59,10 +59,10 @@ Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmakeconfig
  public:
      enum Type { FILEPATH, PATH, BOOL, STRING, INTERNAL, STATIC };
      CMakeConfigItem();
-Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.cpp
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.cpp
 ===================================================================
---- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.cpp
-+++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.cpp
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.cpp
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.cpp
 @@ -223,15 +223,15 @@ void CMakeTool::setDisplayName(const QSt
      CMakeToolManager::notifyAboutUpdate(this);
  }
@@ -84,10 +84,10 @@ Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.c
      return [](const Utils::FileName &fn) { return fn; };
  }
  
-Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.h
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.h
 ===================================================================
---- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.h
-+++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.h
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.h
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.h
 @@ -39,7 +39,10 @@
  
  QT_FORWARD_DECLARE_CLASS(QProcess)
@@ -128,10 +128,10 @@ Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/cmakeprojectmanager/cmaketool.h
  };
  
  } // namespace CMakeProjectManager
-Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.cpp
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.cpp
 ===================================================================
---- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.cpp
-+++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.cpp
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.cpp
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.cpp
 @@ -524,6 +524,11 @@ bool QtVersionManager::isValidId(int id)
      return m_versions.contains(id);
  }
@@ -144,10 +144,10 @@ Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.cpp
  BaseQtVersion *QtVersionManager::version(int id)
  {
      QTC_ASSERT(isLoaded(), return nullptr);
-Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.h
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.h
 ===================================================================
---- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.h
-+++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.h
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.h
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.h
 @@ -65,6 +65,8 @@ public:
  
      static bool isValidId(int id);
@@ -157,10 +157,10 @@ Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/qtsupport/qtversionmanager.h
  signals:
      // content of BaseQtVersion objects with qmake path might have changed
      void dumpUpdatedFor(const Utils::FileName &qmakeCommand);
-Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/projectexplorer/deploymentdata.h
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/projectexplorer/deploymentdata.h
 ===================================================================
---- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/projectexplorer/deploymentdata.h
-+++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/projectexplorer/deploymentdata.h
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/plugins/projectexplorer/deploymentdata.h
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/projectexplorer/deploymentdata.h
 @@ -42,13 +42,25 @@ public:
  
      void addFile(const DeployableFile &file)
@@ -190,10 +190,10 @@ Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/projectexplorer/deploymentdata.
      }
  
      void addFile(const QString &localFilePath, const QString &remoteDirectory,
-Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxsignaloperation.cpp
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxsignaloperation.cpp
 ===================================================================
---- lm-sdk-ide.orig/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxsignaloperation.cpp
-+++ lm-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxsignaloperation.cpp
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxsignaloperation.cpp
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxsignaloperation.cpp
 @@ -51,7 +51,7 @@ RemoteLinuxSignalOperation::~RemoteLinux
  
  static QString signalProcessGroupByPidCommandLine(qint64 pid, int signal)
@@ -218,3 +218,234 @@ Index: lm-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxsignalop
  }
  
  QString RemoteLinuxSignalOperation::killProcessByNameCommandLine(const QString &filePath) const
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/projectexplorer/runnables.h
+===================================================================
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/plugins/projectexplorer/runnables.h
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/projectexplorer/runnables.h
+@@ -43,6 +43,7 @@ public:
+     QString executable;
+     QString commandLineArguments;
+     QString workingDirectory;
++    QString altUser; //alternative user , keep unset by default
+     Utils::Environment environment;
+     ApplicationLauncher::Mode runMode = ApplicationLauncher::Gui;
+     IDevice::ConstPtr device; // Override the kit's device. Keep unset by default.
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/linuxdeviceprocess.cpp
+===================================================================
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/plugins/remotelinux/linuxdeviceprocess.cpp
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/linuxdeviceprocess.cpp
+@@ -100,6 +100,13 @@ QString LinuxDeviceProcess::fullCommandL
+         fullCommandLine.append(QLatin1Char(' '));
+         fullCommandLine.append(runnable.commandLineArguments);
+     }
++
++    if (!runnable.altUser.isEmpty()) {
++        fullCommandLine = QString::fromLatin1("busybox su -s /bin/bash -c %1 - %2")
++                .arg(quote(fullCommandLine))
++                .arg(runnable.altUser);
++    }
++
+     return fullCommandLine;
+ }
+ 
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxrunconfiguration.cpp
+===================================================================
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxrunconfiguration.cpp
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxrunconfiguration.cpp
+@@ -48,6 +48,8 @@ const char TargetNameKey[] = "Qt4Project
+ const char UseAlternateExeKey[] = "RemoteLinux.RunConfig.UseAlternateRemoteExecutable";
+ const char AlternateExeKey[] = "RemoteLinux.RunConfig.AlternateRemoteExecutable";
+ const char WorkingDirectoryKey[] = "RemoteLinux.RunConfig.WorkingDirectory";
++const char UseAlternateUserKey[] = "RemoteLinux.RunConfig.UseAlternateRemoteUser";
++const char AlternateUserKey[] = "RemoteLinux.RunConfig.AlternateRemoteUser";
+ 
+ } // anonymous namespace
+ 
+@@ -55,7 +57,8 @@ class RemoteLinuxRunConfigurationPrivate
+ public:
+     RemoteLinuxRunConfigurationPrivate(const QString &targetName)
+         : targetName(targetName),
+-          useAlternateRemoteExecutable(false)
++          useAlternateRemoteExecutable(false),
++          useAlternateRemoteUser(false)
+     {
+     }
+ 
+@@ -73,6 +76,8 @@ public:
+     bool useAlternateRemoteExecutable;
+     QString alternateRemoteExecutable;
+     QString workingDirectory;
++    QString alternateRemoteUser;
++    bool useAlternateRemoteUser;
+ };
+ 
+ } // namespace Internal
+@@ -137,6 +142,8 @@ Runnable RemoteLinuxRunConfiguration::ru
+     r.executable = remoteExecutableFilePath();
+     r.commandLineArguments = arguments();
+     r.workingDirectory = workingDirectory();
++    if (useAlternateUser())
++        r.altUser = alternateRemoteUser();
+     return r;
+ }
+ 
+@@ -148,6 +155,8 @@ QVariantMap RemoteLinuxRunConfiguration:
+     map.insert(QLatin1String(UseAlternateExeKey), d->useAlternateRemoteExecutable);
+     map.insert(QLatin1String(AlternateExeKey), d->alternateRemoteExecutable);
+     map.insert(QLatin1String(WorkingDirectoryKey), d->workingDirectory);
++    map.insert(QLatin1String(UseAlternateUserKey), d->useAlternateRemoteUser);
++    map.insert(QLatin1String(AlternateUserKey), d->alternateRemoteUser);
+     return map;
+ }
+ 
+@@ -170,6 +179,8 @@ bool RemoteLinuxRunConfiguration::fromMa
+     d->useAlternateRemoteExecutable = map.value(QLatin1String(UseAlternateExeKey), false).toBool();
+     d->alternateRemoteExecutable = map.value(QLatin1String(AlternateExeKey)).toString();
+     d->workingDirectory = map.value(QLatin1String(WorkingDirectoryKey)).toString();
++    d->useAlternateRemoteUser = map.value(QLatin1String(UseAlternateUserKey), false).toBool();
++    d->alternateRemoteUser = map.value(QLatin1String(AlternateUserKey)).toString();
+ 
+     setDefaultDisplayName(defaultDisplayName());
+ 
+@@ -232,6 +243,26 @@ bool RemoteLinuxRunConfiguration::useAlt
+     return d->useAlternateRemoteExecutable;
+ }
+ 
++void RemoteLinuxRunConfiguration::setAlternateRemoteUser(const QString &user)
++{
++    d->alternateRemoteUser = user;
++}
++
++QString RemoteLinuxRunConfiguration::alternateRemoteUser() const
++{
++    return d->alternateRemoteUser;
++}
++
++void RemoteLinuxRunConfiguration::setUseAlternateUser(bool useAlternate)
++{
++    d->useAlternateRemoteUser = useAlternate;
++}
++
++bool RemoteLinuxRunConfiguration::useAlternateUser() const
++{
++    return d->useAlternateRemoteUser;
++}
++
+ void RemoteLinuxRunConfiguration::setAlternateRemoteExecutable(const QString &exe)
+ {
+     d->alternateRemoteExecutable = exe;
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxrunconfiguration.h
+===================================================================
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxrunconfiguration.h
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxrunconfiguration.h
+@@ -68,6 +68,10 @@ public:
+     QString alternateRemoteExecutable() const;
+     void setUseAlternateExecutable(bool useAlternate);
+     bool useAlternateExecutable() const;
++    void setAlternateRemoteUser(const QString &user);
++    QString alternateRemoteUser() const;
++    void setUseAlternateUser (bool useAlternate);
++    bool useAlternateUser() const;
+ 
+     QVariantMap toMap() const override;
+ 
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxrunconfigurationwidget.cpp
+===================================================================
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxrunconfigurationwidget.cpp
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxrunconfigurationwidget.cpp
+@@ -69,6 +69,8 @@ public:
+     QLineEdit alternateCommand;
+     QLabel devConfLabel;
+     QFormLayout genericWidgetsLayout;
++    QCheckBox useAlternateUserBox;
++    QLineEdit alternateUser;
+ };
+ 
+ } // namespace Internal
+@@ -149,6 +151,16 @@ void RemoteLinuxRunConfigurationWidget::
+     altRemoteExeLayout->addWidget(&d->useAlternateCommandBox);
+     d->genericWidgetsLayout.addRow(tr("Alternate executable on device:"), altRemoteExeWidget);
+ 
++    QWidget * const altRemoteUserWidget = new QWidget;
++    QHBoxLayout * const altRemoteUserLayout = new QHBoxLayout(altRemoteUserWidget);
++    altRemoteUserLayout->setContentsMargins(0, 0, 0, 0);
++    d->alternateUser.setText(d->runConfiguration->alternateRemoteUser());
++    altRemoteUserLayout->addWidget(&d->alternateUser);
++    d->useAlternateUserBox.setText(tr("Use this user instead"));
++    d->useAlternateUserBox.setChecked(d->runConfiguration->useAlternateUser());
++    altRemoteUserLayout->addWidget(&d->useAlternateUserBox);
++    d->genericWidgetsLayout.addRow(tr("Alternate user on device:"), altRemoteUserWidget);
++
+     d->argsLineEdit.setText(d->runConfiguration->arguments());
+     d->genericWidgetsLayout.addRow(tr("Arguments:"), &d->argsLineEdit);
+ 
+@@ -168,8 +180,13 @@ void RemoteLinuxRunConfigurationWidget::
+             this, &RemoteLinuxRunConfigurationWidget::handleAlternateCommandChanged);
+     connect(&d->workingDirLineEdit, &QLineEdit::textEdited,
+             this, &RemoteLinuxRunConfigurationWidget::handleWorkingDirectoryChanged);
++    connect(&d->useAlternateUserBox, &QCheckBox::toggled,
++            this, &RemoteLinuxRunConfigurationWidget::handleUseAlternateUserChanged);
++    connect(&d->alternateUser, &QLineEdit::textEdited,
++            this, &RemoteLinuxRunConfigurationWidget::handleAlternateUserChanged);
+     handleDeploySpecsChanged();
+     handleUseAlternateCommandChanged();
++    handleUseAlternateUserChanged();
+ }
+ 
+ void RemoteLinuxRunConfigurationWidget::argumentsEdited(const QString &text)
+@@ -206,6 +223,18 @@ void RemoteLinuxRunConfigurationWidget::
+     d->runConfiguration->setUseAlternateExecutable(useAltExe);
+ }
+ 
++void RemoteLinuxRunConfigurationWidget::handleAlternateUserChanged()
++{
++    d->runConfiguration->setAlternateRemoteUser(d->alternateUser.text().trimmed());
++}
++
++void RemoteLinuxRunConfigurationWidget::handleUseAlternateUserChanged()
++{
++    const bool useAltUser = d->useAlternateUserBox.isChecked();
++    d->alternateUser.setEnabled(useAltUser);
++    d->runConfiguration->setUseAlternateUser(useAltUser);
++}
++
+ void RemoteLinuxRunConfigurationWidget::handleAlternateCommandChanged()
+ {
+     d->runConfiguration->setAlternateRemoteExecutable(d->alternateCommand.text().trimmed());
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxrunconfigurationwidget.h
+===================================================================
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxrunconfigurationwidget.h
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/plugins/remotelinux/remotelinuxrunconfigurationwidget.h
+@@ -59,6 +59,8 @@ private:
+     void handleUseAlternateCommandChanged();
+     void handleAlternateCommandChanged();
+     void handleWorkingDirectoryChanged();
++    void handleAlternateUserChanged();
++    void handleUseAlternateUserChanged();
+ 
+     void addGenericWidgets(QVBoxLayout *mainLayout);
+     void setLabelText(QLabel &label, const QString &regularText, const QString &errorText);
+Index: lm-toolchain-sdk-ide/dist/ide/qtcreator/src/shared/proparser/qmakebuiltins.cpp
+===================================================================
+--- lm-toolchain-sdk-ide.orig/dist/ide/qtcreator/src/shared/proparser/qmakebuiltins.cpp
++++ lm-toolchain-sdk-ide/dist/ide/qtcreator/src/shared/proparser/qmakebuiltins.cpp
+@@ -64,6 +64,8 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ 
++#include <QDebug>
++
+ #ifdef Q_OS_WIN32
+ #define QT_POPEN _popen
+ #define QT_POPEN_READ "rb"
+@@ -431,8 +433,9 @@ void QMakeEvaluator::runProcess(QProcess
+ {
+     proc->setWorkingDirectory(currentDirectory());
+ # ifdef PROEVALUATOR_SETENV
+-    if (!m_option->environment.isEmpty())
++    if (!m_option->environment.isEmpty()) {
+         proc->setProcessEnvironment(m_option->environment);
++    }
+ # endif
+ # ifdef Q_OS_WIN
+     proc->setNativeArguments(QLatin1String("/v:off /s /c \"") + command + QLatin1Char('"'));
