@@ -2,6 +2,15 @@
 
 set -e
 
+if [ -z "$CRED_KEY" ]; then
+    echo "Cred Key not set, do you really want to continue?"
+    select yn in "Yes" "No"; do
+        if [ $yn == No ]; then
+            exit
+        fi
+    done
+fi  
+
 WORK_DIR=${PWD}/sdkbuild
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 SRC_DIR=${SCRIPT_DIR}
