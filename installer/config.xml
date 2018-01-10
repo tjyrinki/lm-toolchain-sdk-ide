@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
-    <Name>LinkMotion SDK (alpha) 2017/07</Name>
+    <Name>Link Motion SDK 0.32</Name>
     <Version>1.0.1</Version>
     <ProductUrl>http://www.link-motion.com</ProductUrl>
-    <Title>LinkMotion SDK (alpha) 2017/07</Title>
+    <Title>Link Motion SDK 0.32</Title>
     <Publisher>Link Motion Oy</Publisher>
     <StartMenuDir>LinkMotionSDK</StartMenuDir>
     <TargetDir>/opt/lm-sdk</TargetDir>
